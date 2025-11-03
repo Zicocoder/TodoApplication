@@ -8,7 +8,7 @@ public class Person {
 
 
     public Person(int id, String firstName, String lastName, String email) {
-        if (firstName == null || lastName == lastName || email == null) {
+        if (firstName == null || lastName == null || email == null) {
             throw new IllegalArgumentException("Fields cannot be null");
         }
         this.id = id;
