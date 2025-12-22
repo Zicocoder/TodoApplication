@@ -1,38 +1,24 @@
 package se.lexicon.model;
 
 public class Person {
-    private int id;
+    private int personId;
     private String firstName;
     private String lastName;
-    private String email;
 
 
-    public Person(int id, String firstName, String lastName, String email) {
-        if (firstName == null || lastName == null || email == null) {
+
+    public Person(int personId, String firstName, String lastName) {
+        if (firstName == null || lastName == null) {
             throw new IllegalArgumentException("Fields cannot be null");
         }
-        this.id = id;
+
+        this.personId = personId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
     }
 
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public Person(String firstName, String lastName) {
+        this(0, firstName, lastName);
     }
 
     public String getLastName() {
@@ -40,20 +26,34 @@ public class Person {
     }
 
     public void setLastName(String lastName) {
+        if (lastName == null) {
+            throw new IllegalArgumentException("lastName cannot be null");
+        }
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFirstName(String firstName) {
+        if (firstName == null) {
+            throw new IllegalArgumentException("firstName cannot be null");
+        }
+        this.firstName = firstName;
     }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
+    }
+
     public String getSummary() {
-        return "(id: " + id +
-                ", name " + firstName + " " + lastName +
-                ", email; " + email + "}";
+        return "(id: " + personId +
+                ", name " + firstName + " " + lastName +")";
     }
 
 }
