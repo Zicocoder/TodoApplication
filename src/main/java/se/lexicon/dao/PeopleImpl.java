@@ -136,11 +136,43 @@ public class PeopleImpl implements People{
 
     @Override
     public Person update(Person person) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "UPDATE person SET first_name = ?, last_name = ? WHERE person_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql))
+        {
+            preparedStatement.setString(1, person.getFirstName());
+            preparedStatement.setString(2, person.getLastName());
+            preparedStatement.setInt(3, person.getPersonId());
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+            System.out.println("No person updated (check person_id).");
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return person;
     }
 
     @Override
     public boolean deleteById(int id) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        String sql = "DELETE FROM person WHERE person_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql))
+        {
+
+            preparedStatement.setInt(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+           return affectedRows > 0;
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-}
+    }
+

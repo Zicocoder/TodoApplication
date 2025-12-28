@@ -3,19 +3,19 @@ package se.lexicon.model;
 import java.time.LocalDate;
 
 public class TodoItem {
-    private int id;
+    private int todoId;
     private String title;
     private String description;
-    private LocalDate deadLine;
+    private LocalDate deadline;
     private boolean done;
-    private Person creator;
+    private Person assignee;
 
     public int getId() {
-        return id;
+        return todoId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.todoId = id;
     }
 
     public String getTitle() {
@@ -34,12 +34,12 @@ public class TodoItem {
         this.done = done;
     }
 
-    public LocalDate getDeadLine() {
-        return deadLine;
+    public LocalDate getDeadline() {
+        return deadline;
     }
 
-    public void setDeadLine(LocalDate deadLine) {
-        this.deadLine = deadLine;
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
     }
 
     public String getDescription() {
@@ -50,38 +50,43 @@ public class TodoItem {
         this.description = description;
     }
 
-    public Person getCreator() {
-        return creator;
+    public Person getAssignee() {
+        return assignee;
     }
 
-    public void setCreator(Person creator) {
-        this.creator = creator;
+    public void setAssignee(Person assignee) {
+        this.assignee = assignee;
     }
 
-    public TodoItem(int id, String title, String description, LocalDate deadLine, Person creator) {
-        if (title == null || title.isEmpty() || deadLine == null) {
+    public TodoItem(int todoId, String title, String description, LocalDate deadline, boolean done, Person assignee) {
+        if (title == null || title.isEmpty() || deadline == null) {
             throw new IllegalArgumentException("Title and deadline cannot be null or empty");
         }
-        this.id = id;
+        this.todoId = todoId;
         this.title = title;
         this.description = description;
-        this.deadLine = deadLine;
-        this.creator = creator;
-        this.done = false;
+        this.deadline = deadline;
+        this.assignee = assignee;
+        this.done = done;
 
     }
+
+    public TodoItem(String title, String description, LocalDate deadline, Person assignee) {
+        this(0, title, description, deadline, false, assignee);
+    }
+
 
     public boolean isOverdue(){
 
 
-        return LocalDate.now().isAfter(deadLine);
+        return !done && LocalDate.now().isAfter(deadline);
 
     }
     public String getSummary() {
-        return "{id " + id +
+        return "{id " + todoId +
                 ", done: " + done +
-                ", deadline " + deadLine +
-                ", creator: " + (creator != null ? creator.getFirstName() + " " + creator.getLastName() : "none") +
+                ", deadline " + deadline +
+                ", assignee: " + (assignee != null ? assignee.getFirstName() + " " + assignee.getLastName() : "none") +
                 "}";
     }
 

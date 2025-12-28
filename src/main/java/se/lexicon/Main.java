@@ -27,6 +27,8 @@ public class Main {
         System.out.println("Saved: " + saved.getSummary());
 
 
+
+
         Person found = people.findById(saved.getPersonId());
         System.out.println("Found: " + (found != null ? found.getSummary() :"null"));
 
@@ -44,16 +46,30 @@ public class Main {
            Person afterDelete = people.findById(saved.getPersonId());
            System.out.println("After delete: " + afterDelete);
 
-
-           people.findAll().forEach(p2 -> System.out.println(p2.getSummary()));
            System.out.println("All people:");
+           people.findAll().forEach(p2 -> System.out.println(p2.getSummary()));
+
+
+
 
            System.out.println("Search 'Nis':");
            people.findByName("Nis").forEach(p2 -> System.out.println(p2.getSummary()));
 
            TodoItems todoItems = new TodoItemsImpl(connection);
 
-           Person assignee = people.create(new Person("Todo", "Assignee"));
+           Person assignee = null;
+
+           for (Person p2 : people.findByName("Todo")) {
+               if (p2.getFirstName().equals("Todo") && p2.getLastName().equals("Assignee")) {
+                   assignee = p2;
+                   break;
+               }
+           }
+
+           if (assignee == null)  {
+               assignee = people.create(new Person("Todo", "Assignee"));
+           }
+
 
            TodoItem todo = new TodoItem(
                    "Change tires",
@@ -68,11 +84,9 @@ public class Main {
            TodoItem foundTodo = todoItems.findById(savedTodo.getId());
            System.out.println("found todo " + (foundTodo != null ? foundTodo.getSummary() : "null"));
 
-           System.out.println("All todos");
-           todoItems.findAll().forEach(t -> System.out.println(t.getSummary()));
 
            var allTodos = todoItems.findAll();
-           System.out.println("Todo count: " + allTodos.size());
+           System.out.println("All todos (count: " + allTodos.size() + "):");
            allTodos.forEach(t -> System.out.println(t.getSummary()));
 
            savedTodo.setDone(true);
@@ -86,11 +100,13 @@ public class Main {
            System.out.println("Todo deleted: " + todoDeleted);
 
            TodoItem afterTodoDelete = todoItems.findById(savedTodo.getId());
-           System.out.println("Todo after delete: " + afterDelete);
+           System.out.println("Todo after delete: " + afterTodoDelete);
 
 
     } catch (SQLException e) {
         e.printStackTrace();
         }
 }
+
+
 }
